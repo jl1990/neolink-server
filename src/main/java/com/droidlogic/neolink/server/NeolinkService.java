@@ -20,6 +20,7 @@ public class NeolinkService {
     private String neolinkConfig;
 
     public Mono<Void> executeCommand(String cameraName, Command command) {
+        log.debug("Executable path: {}, config {}", neolinkPath, neolinkConfig);
         Mono<Void> blockingWrapper = Mono.fromCallable(() -> {
                     ProcessBuilder processBuilder = new ProcessBuilder(commandToArgsList(cameraName, command));
                     Process process = processBuilder.start();
