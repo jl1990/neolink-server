@@ -14,6 +14,15 @@ ext {
     webfluxVersion = '2.7.1'
 }
 
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect { it.getName() }.join(' '),
+                'Main-Class': 'com.droidlogic.neolink.server.Application'
+        )
+    }
+}
+
 dependencies {
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
