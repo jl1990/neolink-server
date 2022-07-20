@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.File;
 import java.util.List;
 
 @Slf4j
@@ -22,6 +23,8 @@ public class NeolinkService {
     public Mono<Void> executeCommand(String cameraName, Command command) {
         Mono<Void> blockingWrapper = Mono.fromCallable(() -> {
                     ProcessBuilder processBuilder = new ProcessBuilder(commandToArgsList(cameraName, command));
+                    processBuilder.redirectErrorStream(true);
+                    processBuilder.redirectOutput(ProcessBuilder.Redirect.INHERIT);
                     Process process = processBuilder.start();
                     boolean succeeded = process.waitFor() == 0;
                     if (!succeeded) {
