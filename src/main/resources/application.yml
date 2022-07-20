@@ -1,0 +1,3 @@
+neolink:
+  path: ${NEOLINK_PATH:/usr/local/bin/neolink}
+  config: ${NEOLINK_CONFIG_PATH:/etc/neolink.toml}
