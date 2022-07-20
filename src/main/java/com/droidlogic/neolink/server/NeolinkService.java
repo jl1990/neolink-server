@@ -2,12 +2,14 @@ package com.droidlogic.neolink.server;
 
 import com.droidlogic.neolink.server.error.NeolinkRuntimeException;
 import com.droidlogic.neolink.server.model.Command;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 
+@Slf4j
 public class NeolinkService {
 
     private static final int RETRY_NUMBER = 5;
@@ -25,6 +27,7 @@ public class NeolinkService {
                     if (!succeeded) {
                         throw new NeolinkRuntimeException("Command failed");
                     }
+                    log.info("Success!");
                     return null;
                 })
                 .retry(RETRY_NUMBER)
