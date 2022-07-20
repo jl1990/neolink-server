@@ -25,8 +25,4 @@ public abstract class Command {
     }
 
     abstract String[] getAllowedValues();
-
-    public String getConfigString(String cameraName) {
-        return name + " " + cameraName + " " + value;
-    }
 }

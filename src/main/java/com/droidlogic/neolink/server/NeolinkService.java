@@ -39,6 +39,6 @@ public class NeolinkService {
     }
 
     public List<String> commandToArgsList(String cameraName, Command command) {
-        return List.of(neolinkPath, "-c", neolinkConfig, command.getConfigString(cameraName));
+        return List.of(neolinkPath, "-c", neolinkConfig, command.getName(), cameraName, command.getValue());
     }
 }
