@@ -23,7 +23,7 @@ java {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
-    implementation "org.springframework.boot:spring-boot-starter-webflux:$webfluxVersion"
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly "org.projectlombok:lombok:$lombokVersion"
     annotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
