@@ -6,14 +6,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
+import reactor.util.retry.Retry;
 
 import java.io.File;
+import java.time.Duration;
 import java.util.List;
 
 @Slf4j
 public class NeolinkService {
 
     private static final int RETRY_NUMBER = 5;
+    public static final int RETRY_WAIT_SECONDS = 5;
     @Value("${neolink.path}")
     private String neolinkPath;
 
@@ -33,7 +36,8 @@ public class NeolinkService {
                     log.info("Success!");
                     return null;
                 })
-                .retry(RETRY_NUMBER)
+                .retryWhen(Retry
+                        .fixedDelay(RETRY_NUMBER, Duration.ofSeconds(RETRY_WAIT_SECONDS)))
                 .then();
         return blockingWrapper.subscribeOn(Schedulers.boundedElastic()).then();
     }
