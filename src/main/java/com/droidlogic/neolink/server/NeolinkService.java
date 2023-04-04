@@ -12,6 +12,7 @@ public class NeolinkService {
 
     private static final int RETRY_NUMBER = 5;
     public static final int RETRY_WAIT_SECONDS = 5;
+
     @Value("${neolink.path}")
     private String neolinkPath;
 
