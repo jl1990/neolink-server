@@ -33,7 +33,11 @@ public class NeolinkController {
             default:
                 throw new IllegalArgumentException("Command " + commandName + " not supported");
         }
-        log.info("Executing command {}={} for {}", commandToExecute.getName(), commandToExecute.getValue(), cameraName);
+        if (commandToExecute.getValue().isPresent()) {
+            log.info("Executing command {}={} for {}", commandToExecute.getName(), commandToExecute.getValue().get(), cameraName);
+        } else {
+            log.info("Executing command {} for {}", commandToExecute.getName(), cameraName);
+        }
         neolinkService.executeCommand(cameraName, commandToExecute);
     }
 }
