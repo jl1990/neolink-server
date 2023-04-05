@@ -6,12 +6,8 @@ import java.util.Arrays;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class PirCommand implements Command {
-
-    private static final String[] ALLOWED_VALUES = new String[]{"on", "off"};
+public class ReadPirCommand implements Command {
     public static final String PIR_COMMAND = "pir";
-
-    private final String value;
 
     @Override
     public String getName() {
@@ -20,11 +16,11 @@ public class PirCommand implements Command {
 
     @Override
     public Optional<String> getValue() {
-        return Optional.of(value);
+        return Optional.empty();
     }
 
     @Override
     public boolean isValidValue(String value) {
-        return Arrays.asList(ALLOWED_VALUES).contains(value);
+        return true;
     }
 }

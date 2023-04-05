@@ -20,22 +20,19 @@ public class NeolinkService {
     private String neolinkConfig;
 
     public void executeCommand(String cameraName, Command command) {
-
-        ProcessBuilder processBuilder = new ProcessBuilder(commandToArgsList(cameraName, command));
-        processBuilder.redirectErrorStream(true);
-        processBuilder.redirectOutput(ProcessBuilder.Redirect.INHERIT);
+        ProcessBuilder processBuilder = getProcessBuilder(cameraName, command);
         int numRetries = 0;
         boolean succeeded = false;
         do {
             try {
                 if (numRetries != 0) {
-                    Thread.sleep(RETRY_WAIT_SECONDS * 1000);
+                    Thread.sleep(RETRY_WAIT_SECONDS * 1000L);
                     log.info("Retrying (retry number {})", numRetries);
                 }
                 Process process = processBuilder.start();
                 succeeded = process.waitFor() == 0;
                 if (!succeeded) {
-                    throw new NeolinkRuntimeException("Command failed");
+                    throw new NeolinkRuntimeException("Command " + command.getName() + " failed");
                 }
                 log.info("Success!");
             } catch (InterruptedException ex) {
@@ -49,7 +46,17 @@ public class NeolinkService {
         } while (!succeeded && numRetries < RETRY_NUMBER);
     }
 
+    private ProcessBuilder getProcessBuilder(String cameraName, Command command) {
+        ProcessBuilder processBuilder = new ProcessBuilder(commandToArgsList(cameraName, command));
+        processBuilder.redirectErrorStream(true);
+        processBuilder.redirectOutput(ProcessBuilder.Redirect.INHERIT);
+        return processBuilder;
+    }
+
     public List<String> commandToArgsList(String cameraName, Command command) {
-        return List.of(neolinkPath, "-c", neolinkConfig, command.getName(), cameraName, command.getValue());
+        if (command.getValue().isPresent()) {
+            return List.of(neolinkPath, "-c", neolinkConfig, command.getName(), cameraName, command.getValue().get());
+        }
+        return List.of(neolinkPath, "-c", neolinkConfig, command.getName(), cameraName);
     }
 }
