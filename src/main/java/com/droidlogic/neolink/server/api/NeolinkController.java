@@ -3,6 +3,7 @@ package com.droidlogic.neolink.server.api;
 import com.droidlogic.neolink.server.NeolinkService;
 import com.droidlogic.neolink.server.model.Command;
 import com.droidlogic.neolink.server.model.PirCommand;
+import com.droidlogic.neolink.server.model.ReadPirCommand;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +24,11 @@ public class NeolinkController {
                                      @RequestParam String commandValue) {
         Command commandToExecute;
         switch (commandName) {
-            case "pir":
+            case PirCommand.PIR_COMMAND:
                 commandToExecute = new PirCommand(commandValue);
+                break;
+            case ReadPirCommand.READPIR_COMMAND:
+                commandToExecute = new ReadPirCommand();
                 break;
             default:
                 throw new IllegalArgumentException("Command " + commandName + " not supported");
